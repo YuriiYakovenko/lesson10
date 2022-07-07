@@ -3,16 +3,13 @@ package main
 import "fmt"
 
 const (
-	dogName = "dog"
-	catName = "cat"
-	cowName = "cow"
+	dogName      = "dog"
+	catName      = "cat"
+	cowName      = "cow"
+	feedPerKgDog = 2.0
+	feedPerKgCat = 7.0
+	feedPerKgCow = 25.0
 )
-
-var feedPerKg = map[string]float64{
-	"dog": 2.0, //"собака - їсть 10кг корму на кожні 5кг власної ваги"
-	"cat": 7.0,
-	"cow": 25.0,
-}
 
 //структура й методи для собак
 type dog struct {
@@ -22,12 +19,12 @@ type dog struct {
 func (d dog) getWeight() float64 {
 	return d.weight
 }
-func (d dog) getName() string {
+func (d dog) String() string {
 	return dogName
 }
 
 func (d dog) needForFeed() float64 {
-	return feedPerKg["dog"] * d.weight
+	return feedPerKgDog * d.weight
 }
 
 //структура й методи для котів
@@ -38,12 +35,12 @@ type cat struct {
 func (c cat) getWeight() float64 {
 	return c.weight
 }
-func (c cat) getName() string {
+func (c cat) String() string {
 	return catName
 }
 
 func (c cat) needForFeed() float64 {
-	return feedPerKg["cat"] * c.weight
+	return feedPerKgCat * c.weight
 }
 
 //структура й методи для корів
@@ -54,19 +51,19 @@ type cow struct {
 func (co cow) getWeight() float64 {
 	return co.weight
 }
-func (co cow) getName() string {
+func (co cow) String() string {
 	return cowName
 }
 
 func (co cow) needForFeed() float64 {
-	return feedPerKg["cow"] * co.weight
+	return feedPerKgCow * co.weight
 }
 
 //інтерфейс
 type monthlyFoodRequirement interface {
 	needForFeed() float64
 	getWeight() float64
-	getName() string
+	fmt.Stringer
 }
 
 func main() {
@@ -80,8 +77,8 @@ func main() {
 	}
 	totalFeed := 0.0
 	for _, a := range animals {
-		fmt.Printf("Назва:%s. Вага:%.2fкг. Необхідно корму на місяць:%.2f\n", a.getName(), a.getWeight(), a.needForFeed())
-		totalFeed += a.needForFeed()
+		feedAmount := a.needForFeed()
+		fmt.Printf("Назва:%s. Вага:%.2fкг. Необхідно корму на місяць:%.2f\n", a.String(), a.getWeight(), feedAmount)
+		totalFeed += feedAmount
 	}
 	fmt.Printf("Всього на місяць необхідно корму: %.2fкг.\n", totalFeed)
-}
