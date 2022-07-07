@@ -82,3 +82,4 @@ func main() {
 		totalFeed += feedAmount
 	}
 	fmt.Printf("Всього на місяць необхідно корму: %.2fкг.\n", totalFeed)
+}
